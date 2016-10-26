@@ -22,20 +22,26 @@ public class BattleShip {
         method.initialiseBoard();
     }  
     
-    public void displayBoard(){
-        
-        for (int[] board1 : board) {
-            for (int column = 0; column < board.length; column++) {
-                board1[column] = 0; 
-            }   
+    public void createBoard(){
+            for (int[] board1 : board) {
+                for (int column = 0; column < board.length; column++) {
+                    board1[column] = 0; 
+                }   
         }
+    }
+    
+    
+    public void displayBoard(){
         
         System.out.println("\n \tA \tB \tC \tD \tE \tF \tG \tH \tI \tJ ");   
         for(int row = 0 ; row < board.length ; row++ ){
             System.out.print((row+1)+"");
             for(int column = 0 ; column < board.length ; column++ ){
                 if(board[row][column] == 0){
-                    System.out.print("\t"+"[ ]");
+                    System.out.print("\t"+"[  ]");
+                }
+                if(board[row][column] == 1){
+                    System.out.print("\t"+"[Ca]");
                 }
             }
             System.out.println();
@@ -44,6 +50,7 @@ public class BattleShip {
     
     public void initialiseBoard(){
         BattleShip method = new BattleShip() ; 
+        method.createBoard();
         System.out.println("You will begin with 5 Ships: \n\n1. Carrier, Size: 5"+
             " \n2. Battleship, Size: 4 \n3. Cruiser, Size: 3\n4. Submarine, Size 3 \n5. Destroyer, Size: 2\n");
         method.displayBoard();
@@ -62,46 +69,51 @@ public class BattleShip {
                 System.out.print("Please type 'u' for up, 'd' for down, 'l' for left, 'r' for right: ");
                 position = input.next().toLowerCase();
             }
-            while ((method.wouldItFit(coordinates, Integer.parseInt(ship.split(":",3)[1]), position) == false)){
+            while ((method.wouldItFit(coordinates, ship, position) == false)){
                 System.out.print("Your ship will not fit, do you want to place it (u)p, (d)own, (l)eft or (r)ight: ");
                 position = input.next().toLowerCase();
                 while (!position.contains("u")&&!position.contains("d")&&!position.contains("l")&&!position.contains("r")){
                     System.out.print("Please type 'u' for up, 'd' for down, 'l' for left, 'r' for right: ");
                     position = input.next().toLowerCase();  
                 }
-            }
-            System.out.println(SHIP1);
+            }         
             method.displayBoard();
         }
             
     }
     
-    public boolean wouldItFit(String coordinates, int size, String position){
+    public boolean wouldItFit(String coordinates, String ship, String position){
+        int size = Integer.parseInt(ship.split(":")[1]);
+        int ShipNo = Integer.parseInt(ship.split(":")[2]);
         BattleShip method = new BattleShip() ;
         int x = (int)(coordinates.charAt(0))-96;
         int y = Integer.parseInt(coordinates.substring(1));
         int end = 5;
-        boolean taken = false;
+        boolean taken = true;
         switch (position){
             case "u":
                end = y - (size-1);
                 break;
             case "d":
-                end = y + (size-1);    
+                end = y + (size-1);
+                if (method.isItTaken(x,y) == true && end > 0 && end <= 10){
+                    for (int i = end; i == y; i--){
+                        board[x][i] = ShipNo;
+                    }
+                }else{
+                    taken = false;
+                }
                break;
             case "l":
                 end = x - (size-1);
                 break;
             case "r":
                 end = x + size-1;
-                for (int i = 0; i<11; i++){
-                     System.out.println("test");
-                }
                 break;
             default:
                 break; 
         } 
-        return (end > 0 && end <= 10 && method.isItTaken(x,y));
+        return (end > 0 && end <= 10 && taken);
     }
     
     
