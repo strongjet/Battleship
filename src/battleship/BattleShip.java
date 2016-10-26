@@ -95,7 +95,7 @@ public class BattleShip {
             case "r":
                 end = x + size-1;
                 for (int i = 0; i<11; i++){
-                     System.out.println();
+                     System.out.println("test");
                 }
                 break;
             default:
