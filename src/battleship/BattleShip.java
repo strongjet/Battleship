@@ -13,12 +13,13 @@ public class BattleShip {
     final int BOARDSIZE = 10;
     //String[] SHIP = new String[]{"Carrier : 5" , "Battleship : 4" , "Cruiser : 3", "Submarine : 3", "Destroyer : 2"};
     List SHIP = asList("Carrier :5:1","Battleship :4:2","Cruiser :3:3","Submarine :3:4","Destroyer :2:5");
-    int[][] board = new int[10][10];
+    static int[][] board = new int[10][10];
     
     public static void main(String[] args) {
         BattleShip method = new BattleShip() ;  
         System.out.println("Welcome to the game BattleShip (v0.1)"+"\n");
         method.input = new Scanner(System.in);
+        method.createBoard();
         method.initialiseBoard();
     }  
     
@@ -40,7 +41,7 @@ public class BattleShip {
                 if(board[row][column] == 0){
                     System.out.print("\t"+"[  ]");
                 }
-                if(board[row][column] == 1){
+                else if(board[row][column] == 1){
                     System.out.print("\t"+"[Ca]");
                 }
             }
@@ -50,7 +51,6 @@ public class BattleShip {
     
     public void initialiseBoard(){
         BattleShip method = new BattleShip() ; 
-        method.createBoard();
         System.out.println("You will begin with 5 Ships: \n\n1. Carrier, Size: 5"+
             " \n2. Battleship, Size: 4 \n3. Cruiser, Size: 3\n4. Submarine, Size 3 \n5. Destroyer, Size: 2\n");
         method.displayBoard();
@@ -64,15 +64,15 @@ public class BattleShip {
                 method.checkMoveIsLegal(coordinates);
             }
             System.out.print("Do you want to place it (u)p, (d)own, (l)eft or (r)ight: ");
-            String position = input.next().toLowerCase();
-            while (!position.contains("u")&&!position.contains("d")&&!position.contains("l")&&!position.contains("r")){
+            String position = input.next().toLowerCase().substring(0, 1);
+            while (!position.equals("u")&&!position.equals("d")&&!position.equals("l")&&!position.equals("r")){
                 System.out.print("Please type 'u' for up, 'd' for down, 'l' for left, 'r' for right: ");
                 position = input.next().toLowerCase();
             }
             while ((method.wouldItFit(coordinates, ship, position) == false)){
                 System.out.print("Your ship will not fit, do you want to place it (u)p, (d)own, (l)eft or (r)ight: ");
                 position = input.next().toLowerCase();
-                while (!position.contains("u")&&!position.contains("d")&&!position.contains("l")&&!position.contains("r")){
+                while (!position.equals("u")&&!position.equals("d")&&!position.equals("l")&&!position.equals("r")){
                     System.out.print("Please type 'u' for up, 'd' for down, 'l' for left, 'r' for right: ");
                     position = input.next().toLowerCase();  
                 }
@@ -97,8 +97,8 @@ public class BattleShip {
             case "d":
                 end = y + (size-1);
                 if (method.isItTaken(x,y) == true && end > 0 && end <= 10){
-                    for (int i = end; i == y; i--){
-                        board[x][i] = ShipNo;
+                    for (int i = y; i <= end; i++){
+                        board[i-1][x-1] = ShipNo;
                     }
                 }else{
                     taken = false;
