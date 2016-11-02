@@ -75,7 +75,7 @@ public class BattleShip {
             System.out.print("\nWhat co-ordinates do you want to place your "+ship.split(":",2)[0]+"of size "+ship.split(":")[1]+" (xy): ");
             String coordinates = input.next().toLowerCase();
             x = (int)(coordinates.charAt(0))-96;
-            y = Integer.parseInt(coordinates.substring(1));           
+            y = Integer.parseInt(coordinates.substring(1));         
             while (method.checkMoveIsLegal(coordinates) == false || isItTaken(x,y) == true){
                 System.out.print("\nYou have entered an invalid co-ordinate to place the "+ship.split(":",2)[0]+"of size "+ship.split(":")[1]+" (xy): ");
                 coordinates = input.next().toLowerCase();
@@ -168,8 +168,8 @@ public class BattleShip {
        
         String x = String.valueOf(coordinates.charAt(0));
         String y = coordinates.substring(1);
-        return ((coordinates.length() == 2 || coordinates.length() == 3 ) 
-                && y.matches("[1-9]")|| y.contains("10") && x.matches ("[a-j]"));
+        return (((coordinates.length() == 2 || coordinates.length() == 3 )) 
+                && (y.matches("[1-9]")|| y.contains("10")) && x.contains ("[a-j]"));
     }
 }
 
